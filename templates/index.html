@@ -1,0 +1,206 @@
+$def with (wrapday,suffix)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html>
+<head>
+		<link href='http://fonts.googleapis.com/css?family=Cabin:bold' rel='stylesheet' type='text/css'>
+		<title>Bandwidth Monitor</title>
+		<style>
+				body
+				{
+						font-family: "Trebuchet MS";
+						background: #ccc;
+						color: #a63a00;
+						padding: 0px;
+						margin: 0px;
+						min-width: 980px;
+				}
+				div.heading
+				{
+						background:#ffa473;
+				}
+				div.heading h1
+				{
+						background: #ff8240;
+						padding: 0px;
+						padding-bottom: 5px;
+						padding-left: 10px;
+						margin: 0px;
+						margin-left: 30px;
+						margin-right: 30px;
+						font-family: 'Cabin', arial, serif;
+				}
+				div.heading h1 span
+				{
+					font-size:13px;
+					color: white;
+				}
+				div.sec
+				{
+						background: white;
+						margin-left: 30px;
+						margin-right: 30px;
+						padding:0px;
+				}
+				div.sec iframe
+				{
+					width: 100%;
+					height: 650px;
+				}
+				div.content_filler
+				{
+					height: 20px;
+					background: white;
+					margin-left: 30px;
+					margin-right: 30px;
+				}
+		</style>
+<script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script> 
+</head>
+<body>
+<div style="background:white;height:30px;margin-left: 30px;margin-right: 30px;"><i></i></div>
+
+<!-- This month to date. -->
+
+<div class="heading"><h1>This month to date&hellip; <span>resets on the $wrapday$suffix of each month</h1></div>
+<div id="m0_content" class="sec">
+		<iframe id="m0_content_iframe" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" src="http://b7q.org/static/html/indicator.html"></iframe>
+</div>
+<div id="m0_content_filler" class="content_filler"><i></i></div>
+
+<!-- Today -->
+
+<div class="heading"><h1 id="mt_header">Today&hellip; <span id="mt_click_prompt">click to show</span></h1></div>
+<div id="mt_content" class="sec">
+		<iframe id="mt_content_iframe" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" src="http://b7q.org/static/html/indicator.html"></iframe>
+</div>
+<div id="mt_content_filler" class="content_filler"><i></i></div>
+
+<!-- 1 month ago. -->
+
+<div class="heading"><h1 id="m1_header">1 billing cycle ago&hellip; <span id="m1_click_prompt">click to show</span></h1></div>
+<div id="m1_content" class="sec">
+		<iframe id="m1_content_iframe" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" src="http://b7q.org/static/html/indicator.html"></iframe>
+</div>
+<div id="m1_content_filler" class="content_filler"><i></i></div>
+
+<!-- 2 months ago. -->
+
+<div class="heading"><h1 id="m2_header">2 billing cycles ago&hellip; <span id="m2_click_prompt">click to show</span></h1></div>
+<div id="m2_content" class="sec">
+		<iframe id="m2_content_iframe" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" src="http://b7q.org/static/html/indicator.html"></iframe>
+</div>
+<div id="m2_content_filler" class="content_filler"><i></i></div>
+
+<!-- History. -->
+
+<div class="heading"><h1 id="mx_header">History&hellip; <span id="mx_click_prompt">click to show</span></h1></div>
+<div id="mx_content" class="sec">
+		<iframe id="mx_content_iframe" scrolling="no" frameborder="0" marginheight="0" marginwidth="0" src="http://b7q.org/static/html/indicator.html"></iframe>
+</div>
+<div id="mx_content_filler" class="content_filler"><i></i></div>
+
+<script id="source" language="javascript" type="text/javascript">
+
+$$(function () {
+		$$("#m0_content").hide();
+		$$("#m0_content_filler").delay(500).slideUp();
+		$$("#m0_content").delay(500).slideDown("slow",function() { $$("#m0_content_iframe").attr("src","m0"); });
+		
+		
+		$$("#m1_content").hide();
+		$$("#m1_header").css({cursor:'pointer'});
+		
+		$$('#m1_header').click(function() {
+			$$("#m1_content_filler").slideUp();
+			$$("#m1_content").slideDown("slow",function() { $$("#m1_content_iframe").attr("src","m1"); });
+			$$("#m1_click_prompt").hide();
+			$$("#m1_header").css({cursor:''});
+		});
+		
+		$$("#m2_content").hide();
+		$$("#m2_header").css({cursor:'pointer'});
+		
+		$$('#m2_header').click(function() {
+			$$("#m2_content_filler").slideUp();
+			$$("#m2_content").slideDown("slow",function() { $$("#m2_content_iframe").attr("src","m2"); });
+			$$("#m2_click_prompt").hide();
+			$$("#m2_header").css({cursor:''});
+		});
+		
+		$$("#mx_content").hide();
+		$$("#mx_header").css({cursor:'pointer'});
+		
+		$$('#mx_header').click(function() {
+			$$("#mx_content_filler").slideUp();
+			$$("#mx_content").slideDown("slow",function() { $$("#mx_content_iframe").attr("src","history"); });
+			$$("#mx_click_prompt").hide();
+			$$("#mx_header").css({cursor:''});
+		});
+		
+		$$("#mt_content").hide();
+		$$("#mt_header").css({cursor:'pointer'});
+		
+		$$('#mt_header').click(function() {
+			$$("#mt_content_filler").slideUp();
+			$$("#mt_content").slideDown("slow",function() { $$("#mt_content_iframe").attr("src","today"); });
+			$$("#mt_click_prompt").hide();
+			$$("#mt_header").css({cursor:''});
+		});
+});
+
+</script>
+
+<div style="text-align:center;padding-top: 10px;padding-bottom: 10px;">
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a>
+</div>
+</body> 
+</html> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

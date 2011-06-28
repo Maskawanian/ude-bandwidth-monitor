@@ -1,0 +1,208 @@
+$def with (mx_data_u,mx_data_d,mx_data_c)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html>
+<head>
+		<link href='http://fonts.googleapis.com/css?family=Cabin:bold' rel='stylesheet' type='text/css'>
+		<title>History</title>
+		<style>
+				body
+				{
+						font-family: "Trebuchet MS";
+						color: #a63a00;
+						padding: 0px;
+						margin: 10px;
+						margin-top: 10px;
+				}
+				.tooltip
+				{
+					position: absolute;
+					display: none;
+					color: black;
+					font-size: 12px;;
+					padding: 4px;;
+					white-space:nowrap;
+					font-family:Arial;
+					padding-bottom:2px;
+					background-color: #F8FFB5;
+					-moz-box-shadow: 2px 2px 5px black;
+					-webkit-box-shadow: 2px 2px 5px black;
+					box-shadow: 2px 2px 5px black;
+					margin-right:20px;
+					behavior: url(/static/htc/PIE.htc);
+				}
+		</style>
+<!--[if IE]>
+<style type="text/css">
+.tooltip
+{
+	border: 1px solid black;
+	padding-bottom:3px;
+}
+</style>
+<![endif]-->
+<!--[if lt IE 9]>
+<script src="/static/js/IE9.js">IE7_PNG_SUFFIX=".png";</script>
+<![endif]-->
+<!--[if IE]><script language="javascript" type="text/javascript" src="http://b7q.org/static/js/flot/excanvas.min.js"></script><![endif]--> 
+<script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script> 
+<script language="javascript" type="text/javascript" src="http://b7q.org/static/js/flot/jquery.flot.js"></script> 
+<script language="javascript" type="text/javascript" src="http://b7q.org/static/js/date.format.js"></script> 
+<script language="javascript" type="text/javascript" src="http://b7q.org/static/js/jquery.timers-1.2.js"></script> 
+</head>
+<body>
+
+	<table style="margin-left: auto; margin-right: auto;">
+		<tr>
+			<td style="color: black; font-size: 12px; color: #555; text-align: center;">Bandwidth<br>Used<br>(GB)</td>
+			<td><div id="mx_data" style="width:800px;height:600px;"></div></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td style="color: black; font-size: 12px; color: #555; text-align: center;">Date</td>
+		</tr>
+	</table>
+	
+	
+	
+
+<script id="source" language="javascript" type="text/javascript">
+
+var w_x = 0;
+var w_y = 0;
+
+
+$$(function () {
+		$$(document).mousemove(function(e){
+			w_x = e.pageX;
+			w_y = e.pageY;
+		});
+		
+		var mx_data_u = $mx_data_u ;
+		var mx_data_d = $mx_data_d ;
+		var mx_data_c = $mx_data_c ;
+		
+		$$.plot($$("#mx_data"),
+			[
+				{ data: mx_data_u, label: "Upload" },
+				{ data: mx_data_d, label: "Download" },
+				{ data: mx_data_c, label: "Combined" }
+			],
+			{ 
+				series: {
+					lines: { show: true },
+					points: { show: false }
+				},
+				grid: { hoverable: true, clickable: true },
+				xaxis: { mode: 'time',timeformat: "%b %d<br>%y", label: "time" },
+				yaxis: { min: 0 },
+				legend: { position: 'nw' }
+			}
+		);
+		
+		function showTooltip(x, y, contents) {
+			window_w = $$(window).width();
+			
+			dict = {
+				top: w_y+20
+			};
+			
+			if ((x + 15) < (window_w/2)) {
+				dict["left"] = w_x+10;
+			} else {
+				dict["right"] = window_w-w_x-30;
+			}
+			
+			$$('<div id="tooltip" class="tooltip">' + contents + '</div>').css( dict ).appendTo("body").fadeIn(200);
+		}
+
+		var previousPoint = null;
+		$$("#mx_data").bind("plothover", function (event, pos, item) {
+			if (item) {
+				if (previousPoint != item.datapoint) {
+					previousPoint = item.datapoint;
+					
+					$$("#tooltip").remove();
+					var time = item.datapoint[0];
+					var gbs = item.datapoint[1].toFixed(2);
+					var label = item.series.label;
+					var date = new Date(time);
+					
+					showTooltip(item.pageX, item.pageY, "<strong>"+date.format("UTC:dddd mmmm dS yyyy, h:MM TT")+":</strong> "+gbs+" GB ("+label+")");
+				}
+			}
+			else {
+				$$("#tooltip").remove();
+				previousPoint = null;
+			}
+		});
+			
+		$$("#mx_data").bind("plotclick", function (event, pos, item) {
+			if (item) {
+				$$("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");
+				plot.highlight(item.series, item.datapoint);
+			}
+		});
+	
+	$$(document).everyTime(1000*60, function(i) {
+		var now = new Date();
+		var minute = now.getMinutes();
+		if (minute == 2 || minute == 17 || minute == 32 || minute == 47) {
+			location.reload();
+		}
+	});
+});
+</script>
+
+
+
+</body> 
+</html> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
